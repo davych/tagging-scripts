@@ -6,6 +6,7 @@ import * as infos from './infos';
 import { set } from 'lodash';
 
 export const runJob = ({ dataset, classList, id }: any) => {
+  console.log('clickable', dataset, classList, id);
   // get actived page
   const page = pageble.getActivedPage();
   if(!page) {
@@ -24,9 +25,9 @@ export const runJob = ({ dataset, classList, id }: any) => {
 
   // get page output, get button output
 
-  const resultOfPage = pageble.getRuleOutput();
+  const resultOfPage = pageble.getRuleOutput() || {};
   const resultOfButton = getRuleOutput(button);
-  const result = R.mergeAll([resultOfPage || {}, resultOfButton]);
+  const result = R.mergeDeepLeft([resultOfPage, resultOfButton]);
   
   const data = {};
   R.forEachObjIndexed((value, key) => {
@@ -38,7 +39,7 @@ export const runJob = ({ dataset, classList, id }: any) => {
 export const getRuleOutput = (button: any, decode?: boolean) => {
   const { rules, tag } = button;
   const pageTag = pageble.getActivePageTag();
-  const data = R.mergeAll([pageTag, tag, auth.getData(), infos.getData()]);
+  const data = R.mergeDeepLeft([pageTag, tag, auth.getData(), infos.getData()]);
   // pending runtime data
   const flattenRules = utils.flattenKeys(rules);
   const output = R.mapObjIndexed((value) => {

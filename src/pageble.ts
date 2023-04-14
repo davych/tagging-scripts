@@ -32,7 +32,7 @@ export const getRuleOutput = (decode?: boolean) => {
     return;
   }
   const { rules, tag } = page;
-  const data = R.mergeAll([tag, auth.getData(), infos.getData()]);
+  const data = R.mergeDeepLeft([tag, auth.getData(), infos.getData()]);
   // pending runtime data
   const flattenRules = utils.flattenKeys(rules);
   const output = R.mapObjIndexed((value) => {
