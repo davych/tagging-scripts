@@ -19,7 +19,7 @@ export const App = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    navigate('/page1?q=1');
+    navigate('/page1');
   }, []);
 
   return (

@@ -1,5 +1,9 @@
 export default {
   "name": "app-name",
+  "pushTargets": {
+    "gtm": "return dataLayer.push({event: eventName, ...data});",
+  },
+  "eventLabel": "event",
   auth: {
     // not sure how many data under auth, this is dynamic setted by develoer
   },
@@ -17,13 +21,15 @@ export default {
       },
       name:'xxxxxxx',
       meta: {},
-      id: '/home',
-      trackDynamicData: true,
+      id: '/page2',
+      event: 'page__view',
+      type: 'page',
+      dynamicKeys: ['aaa'],
       rules: {
         // this is rules data, all of this rules data are static setted by developer
         page: {
           pageName: "{name}:{region}",
-          section: "{name}:{region}-{section}",
+          section: "{name}:{region}-{section}+{aaa}",
         }
       },
       actions: {
@@ -32,6 +38,8 @@ export default {
             tag: {
               buttonName: 'hello-click'
             },
+            type: 'click',
+            event: 'button__click',
             meta: {
             },
             rules: {

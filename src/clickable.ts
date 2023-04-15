@@ -4,6 +4,7 @@ import * as utils from './utils';
 import * as auth from './auth';
 import * as infos from './infos';
 import { merge, set } from 'lodash';
+import * as push from './push';
 
 export const runJob = ({ dataset = {}, classList, id }: any) => {
   // get actived page
@@ -21,7 +22,6 @@ export const runJob = ({ dataset = {}, classList, id }: any) => {
   if (!button) {
     return;
   }
-
   // get page output, get button output
   const resultOfPage = pageble.getRuleOutput() || {};
   const resultOfButton = getRuleOutput(button, false, dataset);
@@ -31,7 +31,8 @@ export const runJob = ({ dataset = {}, classList, id }: any) => {
   R.forEachObjIndexed((value, key) => {
     set(data, key, value);
   }, result);
-  console.log('clickable', data);
+
+  push.pushEvent(button, data);
 }
 
 export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
@@ -41,7 +42,7 @@ export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
     const keysOfCurrentButton = Object.keys(dataset);
     const diff = R.difference(dynamicKeys, keysOfCurrentButton);
     if(!R.isEmpty(diff)) {
-      console.warn('missing dynamic keys', diff);
+      console.warn('[clickable]missing dynamic keys', diff);
     }
   }
 

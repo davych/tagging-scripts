@@ -2,21 +2,28 @@ import * as utils from './utils';
 import * as auth from './auth';
 import * as infos from './infos';
 import * as R from 'ramda';
-import { merge, set } from 'lodash';
+import { isEmpty, merge, set } from 'lodash';
+import * as dynamic from './dynamic';
+import * as push from './push';
 
 export const runJob = () => {
   const page = getActivedPage();
-  if (!page) {
+  if (!page || !isEmpty(page?.dynamicKeys)) {
     return;
   }
-  const { rules, tag } = page;
-  const data = merge({}, tag, auth.getData(), infos.getData());
-  // pending runtime data
-  const flattenRules = utils.flattenKeys(rules);
-  const output = R.mapObjIndexed((value) => {
-    return utils.replace(value, data);
-  }, flattenRules);
-  console.log('output', output);
+  const output = getRuleOutput(true);
+  if (isEmpty(output)) {
+    return;
+  }
+  push.pushEvent(page, output);
+}
+
+export const runJobWithDynamicData = () => {
+  const output = getRuleOutput(true);
+  if (isEmpty(output)) {
+    return;
+  }
+  push.pushEvent(getActivedPage(), output);
 }
 
 export const findPage = R.memoizeWith(R.toUpper, (identifier: string): any => {
@@ -25,9 +32,9 @@ export const findPage = R.memoizeWith(R.toUpper, (identifier: string): any => {
 
 export const getActivedPage = () => {
   const pathname = utils.getPathname();
-  const page = findPage('/home');
+  const page = findPage(pathname);
   if (!page) {
-    return { pathname };
+    return;
   }
   return page;
 }
@@ -45,8 +52,16 @@ export const getRuleOutput = (decode?: boolean) => {
   if (!page) {
     return;
   }
-  const { rules, tag } = page;
-  const data = merge({}, tag, auth.getData(), infos.getData());
+  const { rules, tag, dynamicKeys } = page;
+  const dynamicData = dynamic.getData(utils.getPathname());
+  const data = merge({}, dynamicData, tag, auth.getData(), infos.getData());
+  if(!R.isEmpty(dynamicKeys)) {
+    const keysOfCurrentPage = Object.keys(dynamicData);
+    const diff = R.difference(dynamicKeys, keysOfCurrentPage);
+    if(!R.isEmpty(diff)) {
+      console.warn('[page]missing dynamic keys', diff);
+    }
+  }
   // pending runtime data
   const flattenRules = utils.flattenKeys(rules);
   const output = R.mapObjIndexed((value) => {

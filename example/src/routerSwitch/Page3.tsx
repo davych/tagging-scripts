@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function Page2() {
+export default function Page3() {
 
   return (
     <div>
