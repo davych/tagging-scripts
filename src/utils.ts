@@ -26,7 +26,12 @@ export const getPictureFromDom = (domTarget: any) => {
   };
 }
 
-export const getPathname = () => {
+export const getPathname = (locationInstance?: any) => {
+  const location = locationInstance || window.location;
+  const { hash } = getAppConfig();
+  if (hash) {
+    return location.hash.replace('#', '');
+  }
   return location.pathname;
 }
 

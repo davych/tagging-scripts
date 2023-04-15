@@ -4,7 +4,6 @@ import * as ReactDOM from 'react-dom';
 import { Button } from '@mui/material';
 import '../../src';
 const App = () => {
-
   return (
     <div>
       <Button id="domid">hello</Button>

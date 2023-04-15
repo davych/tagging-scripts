@@ -36,10 +36,10 @@ export default {
             },
             rules: {
               button: {
-                buttonName: "{name}:{region}-{buttonName}"
+                buttonName: "{name}:{region}-{buttonName}:{cardname}"
               }
             },
-            trackDynamicData: true,
+            dynamicKeys: ['cardname'],
             id: 'domid',
             class: 'domclass',
           }

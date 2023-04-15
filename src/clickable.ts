@@ -3,10 +3,9 @@ import * as pageble from './pageble';
 import * as utils from './utils';
 import * as auth from './auth';
 import * as infos from './infos';
-import { set } from 'lodash';
+import { merge, set } from 'lodash';
 
-export const runJob = ({ dataset, classList, id }: any) => {
-  console.log('clickable', dataset, classList, id);
+export const runJob = ({ dataset = {}, classList, id }: any) => {
   // get actived page
   const page = pageble.getActivedPage();
   if(!page) {
@@ -24,10 +23,9 @@ export const runJob = ({ dataset, classList, id }: any) => {
   }
 
   // get page output, get button output
-
   const resultOfPage = pageble.getRuleOutput() || {};
-  const resultOfButton = getRuleOutput(button);
-  const result = R.mergeDeepLeft([resultOfPage, resultOfButton]);
+  const resultOfButton = getRuleOutput(button, false, dataset);
+  const result = merge({}, resultOfPage, resultOfButton);
   
   const data = {};
   R.forEachObjIndexed((value, key) => {
@@ -36,10 +34,19 @@ export const runJob = ({ dataset, classList, id }: any) => {
   console.log('clickable', data);
 }
 
-export const getRuleOutput = (button: any, decode?: boolean) => {
-  const { rules, tag } = button;
+export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
+  const { rules, tag, dynamicKeys } = button;
+
+  if(!R.isEmpty(dynamicKeys)) {
+    const keysOfCurrentButton = Object.keys(dataset);
+    const diff = R.difference(dynamicKeys, keysOfCurrentButton);
+    if(!R.isEmpty(diff)) {
+      console.warn('missing dynamic keys', diff);
+    }
+  }
+
   const pageTag = pageble.getActivePageTag();
-  const data = R.mergeDeepLeft([pageTag, tag, auth.getData(), infos.getData()]);
+  const data = merge({}, dataset, pageTag, tag, auth.getData(), infos.getData());
   // pending runtime data
   const flattenRules = utils.flattenKeys(rules);
   const output = R.mapObjIndexed((value) => {
