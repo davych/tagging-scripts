@@ -15,9 +15,7 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+    "prepare": "tsdx build"
   },
   "husky": {
     "hooks": {
@@ -44,7 +42,6 @@
     }
   ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^8.2.4",
     "@types/lodash": "4.14.190",
     "@types/ramda": "^0.29.0",
     "husky": "^8.0.3",

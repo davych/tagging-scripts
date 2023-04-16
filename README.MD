@@ -1,4 +1,4 @@
-```json
+```
 export default {
   name: 'app-name',
 pushTargets: {

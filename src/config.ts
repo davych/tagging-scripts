@@ -65,7 +65,6 @@ pushTargets: {
           {
             tag: {},
             event: 'http_error',
-            id: 'actionid',
             type: 'http_error',
           },
           {
