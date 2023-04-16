@@ -33,7 +33,7 @@ jobs:
       - name: Build
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: echo $ACCESS_TOKEN
+        run: yarn build
 
       - name: Release-a
         env:

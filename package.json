@@ -3,6 +3,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "repositoryUrl": "git@github.com:davych/tagging-scripts.git",
   "files": [
     "dist",
     "src"
