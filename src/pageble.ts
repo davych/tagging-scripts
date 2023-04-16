@@ -16,7 +16,7 @@ export const runJob = () => {
     return;
   }
   push.pushEvent(page, output);
-}
+};
 
 export const runJobWithDynamicData = () => {
   const output = getRuleOutput(true);
@@ -24,10 +24,12 @@ export const runJobWithDynamicData = () => {
     return;
   }
   push.pushEvent(getActivedPage(), output);
-}
+};
 
 export const findPage = R.memoizeWith(R.toUpper, (identifier: string): any => {
-  return R.find(R.propEq(identifier, 'id'))(window.__TaggingConfiguration.pages);
+  return R.find(R.propEq(identifier, 'id'))(
+    window.__TaggingConfiguration.pages
+  );
 });
 
 export const getActivedPage = () => {
@@ -37,7 +39,7 @@ export const getActivedPage = () => {
     return;
   }
   return page;
-}
+};
 
 export const getActivePageTag = () => {
   const page = getActivedPage();
@@ -45,7 +47,7 @@ export const getActivePageTag = () => {
     return;
   }
   return page.tag;
-}
+};
 
 export const getRuleOutput = (decode?: boolean) => {
   const page = getActivedPage();
@@ -55,26 +57,26 @@ export const getRuleOutput = (decode?: boolean) => {
   const { rules, tag, dynamicKeys } = page;
   const dynamicData = dynamic.getData(utils.getPathname());
   const data = merge({}, dynamicData, tag, auth.getData(), infos.getData());
-  if(!R.isEmpty(dynamicKeys)) {
+  if (!R.isEmpty(dynamicKeys)) {
     const keysOfCurrentPage = Object.keys(dynamicData);
     const diff = R.difference(dynamicKeys, keysOfCurrentPage);
-    if(!R.isEmpty(diff)) {
+    if (!R.isEmpty(diff)) {
       console.warn('[page]missing dynamic keys', diff);
     }
   }
   // pending runtime data
   const flattenRules = utils.flattenKeys(rules);
-  const output = R.mapObjIndexed((value) => {
+  const output = R.mapObjIndexed(value => {
     return utils.replace(value, data);
   }, flattenRules);
 
-  if(decode) {
+  if (decode) {
     const decodeOutput = {};
     R.forEachObjIndexed((value, key) => {
       set(decodeOutput, key, value);
     }, output);
     return decodeOutput;
   }
-  
-  return output
-}
+
+  return output;
+};

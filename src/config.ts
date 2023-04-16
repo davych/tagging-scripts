@@ -1,6 +1,6 @@
 export default {
   name: 'app-name',
-pushTargets: {
+  pushTargets: {
     gtm: 'return dataLayer.push({event: eventName, ...data});',
   },
   eventLabel: 'event',
@@ -9,7 +9,7 @@ pushTargets: {
   },
   infos: {
     // this is same as auth
-    region: 'cn'
+    region: 'cn',
   },
   pages: [
     {
@@ -17,9 +17,9 @@ pushTargets: {
         // this is tag data, all of this tag data are static setted by developer
         // tag data is a picture of page
         name: 'this-is-home',
-        section: 'footer'
+        section: 'footer',
       },
-      name:'xxxxxxx',
+      name: 'xxxxxxx',
       meta: {},
       id: '/page2',
       event: 'page__view',
@@ -30,27 +30,26 @@ pushTargets: {
         page: {
           pageName: '{name}:{region}',
           section: '{name}:{region}-{section}+{aaa}',
-        }
+        },
       },
       actions: {
         clicks: [
           {
             tag: {
-              buttonName: 'hello-click'
+              buttonName: 'hello-click',
             },
             type: 'click',
             event: 'button__click',
-            meta: {
-            },
+            meta: {},
             rules: {
               button: {
-                buttonName: '{name}:{region}-{buttonName}:{cardname}'
-              }
+                buttonName: '{name}:{region}-{buttonName}:{cardname}',
+              },
             },
             dynamicKeys: ['cardname'],
             id: 'domid',
             class: 'domclass',
-          }
+          },
         ],
         toggle: [
           {
@@ -59,7 +58,7 @@ pushTargets: {
             id: 'domid',
             class: 'domclass',
             type: 'toggle',
-          }
+          },
         ],
         errors: [
           {
@@ -75,7 +74,7 @@ pushTargets: {
             type: 'form_error',
           },
         ],
-      }
-    }
-  ]
-}
+      },
+    },
+  ],
+};

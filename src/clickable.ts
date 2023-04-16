@@ -9,16 +9,13 @@ import * as push from './push';
 export const runJob = ({ dataset = {}, classList, id }: any) => {
   // get actived page
   const page = pageble.getActivedPage();
-  if(!page) {
+  if (!page) {
     return;
   }
 
   // get actived button
-  const button = getTargetButton(
-    { classList, id },
-    page
-  );
-  
+  const button = getTargetButton({ classList, id }, page);
+
   if (!button) {
     return;
   }
@@ -26,35 +23,42 @@ export const runJob = ({ dataset = {}, classList, id }: any) => {
   const resultOfPage = pageble.getRuleOutput() || {};
   const resultOfButton = getRuleOutput(button, false, dataset);
   const result = merge({}, resultOfPage, resultOfButton);
-  
+
   const data = {};
   R.forEachObjIndexed((value, key) => {
     set(data, key, value);
   }, result);
 
   push.pushEvent(button, data);
-}
+};
 
 export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
   const { rules, tag, dynamicKeys } = button;
 
-  if(!R.isEmpty(dynamicKeys)) {
+  if (!R.isEmpty(dynamicKeys)) {
     const keysOfCurrentButton = Object.keys(dataset);
     const diff = R.difference(dynamicKeys, keysOfCurrentButton);
-    if(!R.isEmpty(diff)) {
+    if (!R.isEmpty(diff)) {
       console.warn('[clickable]missing dynamic keys', diff);
     }
   }
 
   const pageTag = pageble.getActivePageTag();
-  const data = merge({}, dataset, pageTag, tag, auth.getData(), infos.getData());
+  const data = merge(
+    {},
+    dataset,
+    pageTag,
+    tag,
+    auth.getData(),
+    infos.getData()
+  );
   // pending runtime data
   const flattenRules = utils.flattenKeys(rules);
-  const output = R.mapObjIndexed((value) => {
+  const output = R.mapObjIndexed(value => {
     return utils.replace(value, data);
   }, flattenRules);
 
-  if(decode) {
+  if (decode) {
     const decodeOutput = {};
     R.forEachObjIndexed((value, key) => {
       set(decodeOutput, key, value);
@@ -62,27 +66,24 @@ export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
     return decodeOutput;
   }
   return output;
-}
-
+};
 
 export const getTargetButton = (picture: any, page?: any) => {
-  if(!page) {
+  if (!page) {
     page = pageble.getActivedPage();
   }
   if (!page) {
     return;
   }
   const button: any = R.find(
-    R.anyPass(
-      [
-        R.propEq(picture.id, 'id'),
-        R.propSatisfies(v => picture.classList?.contains(v), 'class')
-      ]
-    )
+    R.anyPass([
+      R.propEq(picture.id, 'id'),
+      R.propSatisfies(v => picture.classList?.contains(v), 'class'),
+    ])
   )(page.actions.clicks);
 
   if (!button) {
     return;
   }
   return button;
-}
+};

@@ -9,11 +9,11 @@ window.__TaggingConfiguration = config;
   if (window.__TaggingConfiguration) {
     console.log('Tagging is running');
 
-    var pushState = history.pushState;
-    history.pushState = function () {
-      const beforeIdentifier = utils.getPathname(location);
-      pushState.apply(history, arguments as any);
-      const afterIdentifier = utils.getPathname(location);
+    var pushState = window.history.pushState;
+    window.history.pushState = function() {
+      const beforeIdentifier = utils.getPathname(window.location);
+      pushState.apply(window.history, arguments as any);
+      const afterIdentifier = utils.getPathname(window.location);
       if (beforeIdentifier !== afterIdentifier) {
         pageble.runJob();
       }
@@ -23,8 +23,12 @@ window.__TaggingConfiguration = config;
       pageble.runJob();
     });
 
-    document.addEventListener('click', (e) => {
-      clickable.runJob(utils.getPictureFromDom(e.target));
-    }, true);
+    document.addEventListener(
+      'click',
+      e => {
+        clickable.runJob(utils.getPictureFromDom(e.target));
+      },
+      true
+    );
   }
-})()
+})();

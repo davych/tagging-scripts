@@ -7,12 +7,12 @@ export const updateDynamicData = (data: any) => {
   dynamic.setData(pathname, data);
   // update dynamic data
   pageble.runJobWithDynamicData();
-}
+};
 
 export const action = (name: string) => {
   return {
     run: () => {
       // run action
-    }
-  }
-}
+    },
+  };
+};
