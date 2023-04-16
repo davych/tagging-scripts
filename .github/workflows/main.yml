@@ -33,7 +33,7 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Release
+      - name: Release-a
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
