@@ -1,5 +1,6 @@
 module.exports = {
   tagFormat: 'v${version}',
+  repositoryUrl: "git@github.com:davych/tagging-scripts.git",
   "branches": [
     {name: 'main'},
     {name: 'beta', channel: 'beta', prerelease: 'beta'},
