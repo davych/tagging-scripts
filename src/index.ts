@@ -1,9 +1,9 @@
-import config from './config';
+// import config from './config';
 import * as clickable from './clickable';
 import * as pageble from './pageble';
 import * as utils from './utils';
 
-window.__TaggingConfiguration = config;
+// window.__TaggingConfiguration = config;
 
 (() => {
   if (window.__TaggingConfiguration) {
