@@ -1,9 +1,9 @@
 export default {
-  "name": "app-name",
-  "pushTargets": {
-    "gtm": "return dataLayer.push({event: eventName, ...data});",
+  name: 'app-name',
+pushTargets: {
+    gtm: 'return dataLayer.push({event: eventName, ...data});',
   },
-  "eventLabel": "event",
+  eventLabel: 'event',
   auth: {
     // not sure how many data under auth, this is dynamic setted by develoer
   },
@@ -16,7 +16,7 @@ export default {
       tag: {
         // this is tag data, all of this tag data are static setted by developer
         // tag data is a picture of page
-        name: "this-is-home",
+        name: 'this-is-home',
         section: 'footer'
       },
       name:'xxxxxxx',
@@ -28,8 +28,8 @@ export default {
       rules: {
         // this is rules data, all of this rules data are static setted by developer
         page: {
-          pageName: "{name}:{region}",
-          section: "{name}:{region}-{section}+{aaa}",
+          pageName: '{name}:{region}',
+          section: '{name}:{region}-{section}+{aaa}',
         }
       },
       actions: {
@@ -44,7 +44,7 @@ export default {
             },
             rules: {
               button: {
-                buttonName: "{name}:{region}-{buttonName}:{cardname}"
+                buttonName: '{name}:{region}-{buttonName}:{cardname}'
               }
             },
             dynamicKeys: ['cardname'],
@@ -55,9 +55,27 @@ export default {
         toggle: [
           {
             tag: {},
-            id: 'actionid',
+            event: 'toggle',
+            id: 'domid',
+            class: 'domclass',
+            type: 'toggle',
           }
-        ]
+        ],
+        errors: [
+          {
+            tag: {},
+            event: 'http_error',
+            id: 'actionid',
+            type: 'http_error',
+          },
+          {
+            tag: {},
+            event: 'form_error',
+            id: 'domid',
+            class: 'domclass',
+            type: 'form_error',
+          },
+        ],
       }
     }
   ]
