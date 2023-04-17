@@ -9,10 +9,10 @@ export const updateDynamicData = (data: any) => {
   pageble.runJobWithDynamicData();
 };
 
-export const action = (name: string) => {
-  return {
-    run: () => {
-      // run action
-    },
-  };
-};
+export const updateAuth = (auth: any) => {
+  utils.updateAuth(auth);
+}
+
+export const updateInfos = (infos: any) => {
+  utils.updateInfos(infos);
+}

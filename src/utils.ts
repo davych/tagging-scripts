@@ -47,3 +47,17 @@ export const getAppConfig = () => {
 export const setAppConfig = (config: any) => {
   __TaggingConfiguration = config;
 };
+
+export const updateInfos = (infos: any) => {
+  if(!__TaggingConfiguration.infos) {
+    __TaggingConfiguration.infos = {};
+  }
+  merge(__TaggingConfiguration.infos, infos);
+}
+
+export const updateAuth = (auth: any) => {
+  if(!__TaggingConfiguration.auth) {
+    __TaggingConfiguration.auth = {};
+  }
+  merge(__TaggingConfiguration.auth, auth);
+}

@@ -1,7 +1,9 @@
 // import config from './config';
+import { debounce } from 'lodash';
 import * as clickable from './clickable';
 import * as pageble from './pageble';
 import * as utils from './utils';
+
 
 const taggingRun = (__TaggingConfiguration: any) => {
   if (__TaggingConfiguration) {
@@ -13,7 +15,7 @@ const taggingRun = (__TaggingConfiguration: any) => {
       pushState.apply(window.history, arguments as any);
       const afterIdentifier = utils.getPathname(window.location);
       if (beforeIdentifier !== afterIdentifier) {
-        pageble.runJob();
+        debounce(pageble.runJob, 100)();
       }
     };
 
