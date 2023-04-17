@@ -2,8 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var R = require('ramda');
 var lodash = require('lodash');
+var R = require('ramda');
 
 var __TaggingConfiguration;
 var flattenKeys = function flattenKeys(obj, path) {
@@ -50,11 +50,11 @@ var setAppConfig = function setAppConfig(config) {
 };
 
 var getData = function getData() {
-  return  getAppConfig().auth || {};
+  return getAppConfig().auth || {};
 };
 
 var getData$1 = function getData() {
-  return  getAppConfig().infos || {};
+  return getAppConfig().infos || {};
 };
 
 var dynamic = {};
@@ -225,7 +225,7 @@ var taggingRun = function taggingRun(__TaggingConfiguration) {
       pushState.apply(window.history, arguments);
       var afterIdentifier = getPathname(window.location);
       if (beforeIdentifier !== afterIdentifier) {
-        runJob();
+        lodash.debounce(runJob, 100)();
       }
     };
     window.addEventListener('popstate', function () {
