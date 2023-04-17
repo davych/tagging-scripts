@@ -36,6 +36,9 @@ var getPathname = function getPathname(locationInstance) {
 var getAppConfig = function getAppConfig() {
   return __TaggingConfiguration;
 };
+var setAppConfig = function setAppConfig(config) {
+  __TaggingConfiguration = config;
+};
 
 var getData = function getData() {
   return  {};
@@ -203,6 +206,7 @@ var getTargetButton = function getTargetButton(picture, page) {
 var taggingRun = function taggingRun(__TaggingConfiguration) {
   if (__TaggingConfiguration) {
     console.log('Tagging is running');
+    setAppConfig(__TaggingConfiguration);
     var pushState = window.history.pushState;
     window.history.pushState = function () {
       var beforeIdentifier = getPathname(window.location);

@@ -6,7 +6,7 @@ import * as utils from './utils';
 const taggingRun = (__TaggingConfiguration: any) => {
   if (__TaggingConfiguration) {
     console.log('Tagging is running');
-
+    utils.setAppConfig(__TaggingConfiguration);
     var pushState = window.history.pushState;
     window.history.pushState = function() {
       const beforeIdentifier = utils.getPathname(window.location);
