@@ -7,11 +7,14 @@ import * as dynamic from './dynamic';
 import * as push from './push';
 
 export const runJob = () => {
+  console.log('runJob-pageview');
   const page = getActivedPage();
+  console.log('getActivedPage runJob-pageview', page);
   if (!page || !isEmpty(page?.dynamicKeys)) {
     return;
   }
   const output = getRuleOutput(true);
+  console.log('output runJob-pageview', output);
   if (isEmpty(output)) {
     return;
   }
@@ -33,7 +36,9 @@ export const findPage = R.memoizeWith(R.toUpper, (identifier: string): any => {
 
 export const getActivedPage = () => {
   const pathname = utils.getPathname();
+  console.log('getActivedPage pathname', pathname);
   const page = findPage(pathname);
+  console.log('findPage page', page);
   if (!page) {
     return;
   }
