@@ -27,8 +27,9 @@ export const runJobWithDynamicData = () => {
 };
 
 export const findPage = R.memoizeWith(R.toUpper, (identifier: string): any => {
+  const config = utils.getAppConfig();
   return R.find(R.propEq(identifier, 'id'))(
-    window.__TaggingConfiguration.pages
+    config.pages
   );
 });
 

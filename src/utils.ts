@@ -1,5 +1,7 @@
 import { isObject, reduce, merge } from 'lodash';
 
+let __TaggingConfiguration: any;
+
 export const flattenKeys = (
   obj: Record<string, unknown>,
   path: string[] = []
@@ -39,5 +41,9 @@ export const getPathname = (locationInstance?: any) => {
 };
 
 export const getAppConfig = () => {
-  return window.__TaggingConfiguration;
+  return __TaggingConfiguration;
 };
+
+export const setAppConfig = (config: any) => {
+  __TaggingConfiguration = config;
+}
