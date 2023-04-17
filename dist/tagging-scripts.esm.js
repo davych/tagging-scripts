@@ -75,11 +75,14 @@ var pushEvent = function pushEvent(scope, data) {
 };
 
 var runJob = function runJob() {
+  console.log('runJob-pageview');
   var page = getActivedPage();
+  console.log('getActivedPage runJob-pageview', page);
   if (!page || !isEmpty(page == null ? void 0 : page.dynamicKeys)) {
     return;
   }
   var output = getRuleOutput(true);
+  console.log('output runJob-pageview', output);
   if (isEmpty(output)) {
     return;
   }
@@ -91,7 +94,9 @@ var findPage = /*#__PURE__*/memoizeWith(toUpper, function (identifier) {
 });
 var getActivedPage = function getActivedPage() {
   var pathname = getPathname();
+  console.log('getActivedPage pathname', pathname);
   var page = findPage(pathname);
+  console.log('findPage page', page);
   if (!page) {
     return;
   }
