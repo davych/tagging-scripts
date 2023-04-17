@@ -49,15 +49,15 @@ export const setAppConfig = (config: any) => {
 };
 
 export const updateInfos = (infos: any) => {
-  if(!__TaggingConfiguration.infos) {
+  if (!__TaggingConfiguration.infos) {
     __TaggingConfiguration.infos = {};
   }
   merge(__TaggingConfiguration.infos, infos);
-}
+};
 
 export const updateAuth = (auth: any) => {
-  if(!__TaggingConfiguration.auth) {
+  if (!__TaggingConfiguration.auth) {
     __TaggingConfiguration.auth = {};
   }
   merge(__TaggingConfiguration.auth, auth);
-}
+};

@@ -11,8 +11,8 @@ export const updateDynamicData = (data: any) => {
 
 export const updateAuth = (auth: any) => {
   utils.updateAuth(auth);
-}
+};
 
 export const updateInfos = (infos: any) => {
   utils.updateInfos(infos);
-}
+};
