@@ -3,7 +3,7 @@ import * as pageble from './pageble';
 import * as utils from './utils';
 import * as auth from './auth';
 import * as infos from './infos';
-import { merge, set } from 'lodash';
+import { isEmpty, merge, set } from 'lodash';
 import * as push from './push';
 
 export const runJob = ({ dataset = {}, classList, id }: any) => {
@@ -33,9 +33,9 @@ export const runJob = ({ dataset = {}, classList, id }: any) => {
 };
 
 export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
-  const { rules, tag, dynamicKeys } = button;
+  const { rules, tag, dynamicKeys = [] } = button;
 
-  if (!R.isEmpty(dynamicKeys)) {
+  if (!isEmpty(dynamicKeys)) {
     const keysOfCurrentButton = Object.keys(dataset);
     const diff = R.difference(dynamicKeys, keysOfCurrentButton);
     if (!R.isEmpty(diff)) {

@@ -24,12 +24,11 @@ export default {
       id: '/page2',
       event: 'page__view',
       type: 'page',
-      dynamicKeys: ['aaa'],
       rules: {
         // this is rules data, all of this rules data are static setted by developer
         page: {
           pageName: '{name}:{region}',
-          section: '{name}:{region}-{section}+{aaa}',
+          section: '{name}:{region}-{section}',
         },
       },
       actions: {

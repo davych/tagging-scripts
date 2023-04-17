@@ -53,10 +53,10 @@ export const getRuleOutput = (decode?: boolean) => {
   if (!page) {
     return;
   }
-  const { rules, tag, dynamicKeys } = page;
+  const { rules, tag, dynamicKeys = [] } = page;
   const dynamicData = dynamic.getData(utils.getPathname());
   const data = merge({}, dynamicData, tag, auth.getData(), infos.getData());
-  if (!R.isEmpty(dynamicKeys)) {
+  if (!isEmpty(dynamicKeys)) {
     const keysOfCurrentPage = Object.keys(dynamicData);
     const diff = R.difference(dynamicKeys, keysOfCurrentPage);
     if (!R.isEmpty(diff)) {
