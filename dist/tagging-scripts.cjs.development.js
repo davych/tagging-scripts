@@ -35,18 +35,26 @@ var getPictureFromDom = function getPictureFromDom(domTarget) {
 };
 var getPathname = function getPathname(locationInstance) {
   var location = locationInstance || window.location;
+  var _getAppConfig = getAppConfig(),
+    hash = _getAppConfig.hash;
+  if (hash) {
+    return location.hash.replace('#', '');
+  }
   return location.pathname;
 };
 var getAppConfig = function getAppConfig() {
   return __TaggingConfiguration;
 };
+var setAppConfig = function setAppConfig(config) {
+  __TaggingConfiguration = config;
+};
 
 var getData = function getData() {
-  return  {};
+  return  getAppConfig().auth || {};
 };
 
 var getData$1 = function getData() {
-  return  {};
+  return  getAppConfig().infos || {};
 };
 
 var dynamic = {};
@@ -57,7 +65,8 @@ var getData$2 = function getData(key) {
 var pushEvent = function pushEvent(scope, data) {
   var _utils$getAppConfig = getAppConfig(),
     eventLabel = _utils$getAppConfig.eventLabel,
-    pushTargets =  {} ;
+    _utils$getAppConfig$p = _utils$getAppConfig.pushTargets,
+    pushTargets = _utils$getAppConfig$p === void 0 ? {} : _utils$getAppConfig$p;
   // push event
   lodash.set(window, '__TAG_DATA__LAYER', data);
   var eventName = lodash.get(scope, eventLabel, scope.type || 'event');
