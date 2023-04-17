@@ -7,3 +7,4 @@ export declare const getPictureFromDom: (domTarget: any) => {
 };
 export declare const getPathname: (locationInstance?: any) => any;
 export declare const getAppConfig: () => any;
+export declare const setAppConfig: (config: any) => void;

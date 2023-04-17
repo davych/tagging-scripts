@@ -1,78 +1,7 @@
 import { isEmpty as isEmpty$1, difference, mapObjIndexed, forEachObjIndexed, memoizeWith, toUpper, find, propEq, anyPass, propSatisfies } from 'ramda';
 import { isObject, reduce, merge, get, set, isEmpty } from 'lodash-es';
 
-var config = {
-  name: 'app-name',
-  pushTargets: {
-    gtm: 'return dataLayer.push({event: eventName, ...data});'
-  },
-  eventLabel: 'event',
-  auth: {
-    // not sure how many data under auth, this is dynamic setted by develoer
-  },
-  infos: {
-    // this is same as auth
-    region: 'cn'
-  },
-  pages: [{
-    tag: {
-      // this is tag data, all of this tag data are static setted by developer
-      // tag data is a picture of page
-      name: 'this-is-home',
-      section: 'footer'
-    },
-    name: 'xxxxxxx',
-    meta: {},
-    id: '/page2',
-    event: 'page__view',
-    type: 'page',
-    dynamicKeys: ['aaa'],
-    rules: {
-      // this is rules data, all of this rules data are static setted by developer
-      page: {
-        pageName: '{name}:{region}',
-        section: '{name}:{region}-{section}+{aaa}'
-      }
-    },
-    actions: {
-      clicks: [{
-        tag: {
-          buttonName: 'hello-click'
-        },
-        type: 'click',
-        event: 'button__click',
-        meta: {},
-        rules: {
-          button: {
-            buttonName: '{name}:{region}-{buttonName}:{cardname}'
-          }
-        },
-        dynamicKeys: ['cardname'],
-        id: 'domid',
-        "class": 'domclass'
-      }],
-      toggle: [{
-        tag: {},
-        event: 'toggle',
-        id: 'domid',
-        "class": 'domclass',
-        type: 'toggle'
-      }],
-      errors: [{
-        tag: {},
-        event: 'http_error',
-        type: 'http_error'
-      }, {
-        tag: {},
-        event: 'form_error',
-        id: 'domid',
-        "class": 'domclass',
-        type: 'form_error'
-      }]
-    }
-  }]
-};
-
+var __TaggingConfiguration;
 var flattenKeys = function flattenKeys(obj, path) {
   var _ref;
   if (path === void 0) {
@@ -102,23 +31,18 @@ var getPictureFromDom = function getPictureFromDom(domTarget) {
 };
 var getPathname = function getPathname(locationInstance) {
   var location = locationInstance || window.location;
-  var _getAppConfig = getAppConfig(),
-    hash = _getAppConfig.hash;
-  if (hash) {
-    return location.hash.replace('#', '');
-  }
   return location.pathname;
 };
 var getAppConfig = function getAppConfig() {
-  return window.__TaggingConfiguration;
+  return __TaggingConfiguration;
 };
 
 var getData = function getData() {
-  return  getAppConfig().auth || {};
+  return  {};
 };
 
 var getData$1 = function getData() {
-  return  getAppConfig().infos || {};
+  return  {};
 };
 
 var dynamic = {};
@@ -129,8 +53,7 @@ var getData$2 = function getData(key) {
 var pushEvent = function pushEvent(scope, data) {
   var _utils$getAppConfig = getAppConfig(),
     eventLabel = _utils$getAppConfig.eventLabel,
-    _utils$getAppConfig$p = _utils$getAppConfig.pushTargets,
-    pushTargets = _utils$getAppConfig$p === void 0 ? {} : _utils$getAppConfig$p;
+    pushTargets =  {} ;
   // push event
   set(window, '__TAG_DATA__LAYER', data);
   var eventName = get(scope, eventLabel, scope.type || 'event');
@@ -154,7 +77,8 @@ var runJob = function runJob() {
   pushEvent(page, output);
 };
 var findPage = /*#__PURE__*/memoizeWith(toUpper, function (identifier) {
-  return find(propEq(identifier, 'id'))(window.__TaggingConfiguration.pages);
+  var config = getAppConfig();
+  return find(propEq(identifier, 'id'))(config.pages);
 });
 var getActivedPage = function getActivedPage() {
   var pathname = getPathname();
@@ -275,9 +199,9 @@ var getTargetButton = function getTargetButton(picture, page) {
   return button;
 };
 
-window.__TaggingConfiguration = config;
-(function () {
-  if (window.__TaggingConfiguration) {
+// import config from './config';
+var taggingRun = function taggingRun(__TaggingConfiguration) {
+  if (__TaggingConfiguration) {
     console.log('Tagging is running');
     var pushState = window.history.pushState;
     window.history.pushState = function () {
@@ -295,5 +219,7 @@ window.__TaggingConfiguration = config;
       runJob$1(getPictureFromDom(e.target));
     }, true);
   }
-})();
+};
+
+export default taggingRun;
 //# sourceMappingURL=tagging-scripts.esm.js.map
