@@ -28,9 +28,7 @@ export const runJobWithDynamicData = () => {
 
 export const findPage = R.memoizeWith(R.toUpper, (identifier: string): any => {
   const config = utils.getAppConfig();
-  return R.find(R.propEq(identifier, 'id'))(
-    config.pages
-  );
+  return R.find(R.propEq(identifier, 'id'))(config.pages);
 });
 
 export const getActivedPage = () => {

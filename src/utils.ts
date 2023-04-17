@@ -46,4 +46,4 @@ export const getAppConfig = () => {
 
 export const setAppConfig = (config: any) => {
   __TaggingConfiguration = config;
-}
+};

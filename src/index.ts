@@ -3,7 +3,6 @@ import * as clickable from './clickable';
 import * as pageble from './pageble';
 import * as utils from './utils';
 
-
 const taggingRun = (__TaggingConfiguration: any) => {
   if (__TaggingConfiguration) {
     console.log('Tagging is running');
