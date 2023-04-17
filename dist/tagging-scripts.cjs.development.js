@@ -115,10 +115,11 @@ var getRuleOutput = function getRuleOutput(decode) {
   }
   var rules = page.rules,
     tag = page.tag,
-    dynamicKeys = page.dynamicKeys;
+    _page$dynamicKeys = page.dynamicKeys,
+    dynamicKeys = _page$dynamicKeys === void 0 ? [] : _page$dynamicKeys;
   var dynamicData = getData$2(getPathname());
   var data = lodash.merge({}, dynamicData, tag, getData(), getData$1());
-  if (!R.isEmpty(dynamicKeys)) {
+  if (!lodash.isEmpty(dynamicKeys)) {
     var keysOfCurrentPage = Object.keys(dynamicData);
     var diff = R.difference(dynamicKeys, keysOfCurrentPage);
     if (!R.isEmpty(diff)) {
@@ -171,8 +172,9 @@ var runJob$1 = function runJob(_ref) {
 var getRuleOutput$1 = function getRuleOutput(button, decode, dataset) {
   var rules = button.rules,
     tag = button.tag,
-    dynamicKeys = button.dynamicKeys;
-  if (!R.isEmpty(dynamicKeys)) {
+    _button$dynamicKeys = button.dynamicKeys,
+    dynamicKeys = _button$dynamicKeys === void 0 ? [] : _button$dynamicKeys;
+  if (!lodash.isEmpty(dynamicKeys)) {
     var keysOfCurrentButton = Object.keys(dataset);
     var diff = R.difference(dynamicKeys, keysOfCurrentButton);
     if (!R.isEmpty(diff)) {

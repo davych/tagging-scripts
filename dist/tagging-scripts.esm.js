@@ -1,4 +1,4 @@
-import { isEmpty as isEmpty$1, difference, mapObjIndexed, forEachObjIndexed, memoizeWith, toUpper, find, propEq, anyPass, propSatisfies } from 'ramda';
+import { difference, isEmpty as isEmpty$1, mapObjIndexed, forEachObjIndexed, memoizeWith, toUpper, find, propEq, anyPass, propSatisfies } from 'ramda';
 import { isObject, reduce, merge, get, set, isEmpty } from 'lodash-es';
 
 var __TaggingConfiguration;
@@ -111,10 +111,11 @@ var getRuleOutput = function getRuleOutput(decode) {
   }
   var rules = page.rules,
     tag = page.tag,
-    dynamicKeys = page.dynamicKeys;
+    _page$dynamicKeys = page.dynamicKeys,
+    dynamicKeys = _page$dynamicKeys === void 0 ? [] : _page$dynamicKeys;
   var dynamicData = getData$2(getPathname());
   var data = merge({}, dynamicData, tag, getData(), getData$1());
-  if (!isEmpty$1(dynamicKeys)) {
+  if (!isEmpty(dynamicKeys)) {
     var keysOfCurrentPage = Object.keys(dynamicData);
     var diff = difference(dynamicKeys, keysOfCurrentPage);
     if (!isEmpty$1(diff)) {
@@ -167,8 +168,9 @@ var runJob$1 = function runJob(_ref) {
 var getRuleOutput$1 = function getRuleOutput(button, decode, dataset) {
   var rules = button.rules,
     tag = button.tag,
-    dynamicKeys = button.dynamicKeys;
-  if (!isEmpty$1(dynamicKeys)) {
+    _button$dynamicKeys = button.dynamicKeys,
+    dynamicKeys = _button$dynamicKeys === void 0 ? [] : _button$dynamicKeys;
+  if (!isEmpty(dynamicKeys)) {
     var keysOfCurrentButton = Object.keys(dataset);
     var diff = difference(dynamicKeys, keysOfCurrentButton);
     if (!isEmpty$1(diff)) {
