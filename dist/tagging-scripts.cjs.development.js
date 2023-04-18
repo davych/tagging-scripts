@@ -151,6 +151,10 @@ var getRuleOutput = function getRuleOutput(decode) {
   // pending runtime data
   var flattenRules = flattenKeys(rules);
   var output = R.mapObjIndexed(function (value) {
+    if (value.startsWith('return')) {
+      var vauleFunc = new Function('data', value);
+      return vauleFunc(data);
+    }
     return replace(value, data);
   }, flattenRules);
   if (decode) {
