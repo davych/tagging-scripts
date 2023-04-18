@@ -1,4 +1,4 @@
-import { isObject, reduce, merge, get, set, isEmpty, debounce } from 'lodash-es';
+import { merge, isObject, reduce, set, get, isEmpty, debounce } from 'lodash-es';
 import { difference, isEmpty as isEmpty$1, mapObjIndexed, forEachObjIndexed, memoizeWith, toUpper, find, propEq, anyPass, propSatisfies } from 'ramda';
 
 var __TaggingConfiguration;
@@ -44,6 +44,18 @@ var getAppConfig = function getAppConfig() {
 var setAppConfig = function setAppConfig(config) {
   __TaggingConfiguration = config;
 };
+var updateInfos = function updateInfos(infos) {
+  if (!__TaggingConfiguration.infos) {
+    __TaggingConfiguration.infos = {};
+  }
+  merge(__TaggingConfiguration.infos, infos);
+};
+var updateAuth = function updateAuth(auth) {
+  if (!__TaggingConfiguration.auth) {
+    __TaggingConfiguration.auth = {};
+  }
+  merge(__TaggingConfiguration.auth, auth);
+};
 
 var getData = function getData() {
   return getAppConfig().auth || {};
@@ -56,6 +68,9 @@ var getData$1 = function getData() {
 var dynamic = {};
 var getData$2 = function getData(key) {
   return get(dynamic, key, {});
+};
+var setData = function setData(key, data) {
+  set(dynamic, key, data);
 };
 
 var pushEvent = function pushEvent(scope, data) {
@@ -84,6 +99,13 @@ var runJob = function runJob() {
     return;
   }
   pushEvent(page, output);
+};
+var runJobWithDynamicData = function runJobWithDynamicData() {
+  var output = getRuleOutput(true);
+  if (isEmpty(output)) {
+    return;
+  }
+  pushEvent(getActivedPage(), output);
 };
 var findPage = /*#__PURE__*/memoizeWith(toUpper, function (identifier) {
   var config = getAppConfig();
@@ -140,7 +162,8 @@ var getRuleOutput = function getRuleOutput(decode) {
 var runJob$1 = function runJob(_ref) {
   var _ref$dataset = _ref.dataset,
     dataset = _ref$dataset === void 0 ? {} : _ref$dataset,
-    classList = _ref.classList,
+    _ref$classList = _ref.classList,
+    classList = _ref$classList === void 0 ? [] : _ref$classList,
     id = _ref.id;
   // get actived page
   var page = getActivedPage();
@@ -178,10 +201,14 @@ var getRuleOutput$1 = function getRuleOutput(button, decode, dataset) {
     }
   }
   var pageTag = getActivePageTag();
-  var data = merge({}, dataset, pageTag, tag, getData(), getData$1());
-  // pending runtime data
+  var dynamicData = getData$2(getPathname());
+  var data = merge({}, dynamicData, dataset, pageTag, tag, getData(), getData$1());
   var flattenRules = flattenKeys(rules);
   var output = mapObjIndexed(function (value) {
+    if (value.startsWith('return')) {
+      var vauleFunc = new Function('data', value);
+      return vauleFunc(data);
+    }
     return replace(value, data);
   }, flattenRules);
   if (decode) {
@@ -210,6 +237,26 @@ var getTargetButton = function getTargetButton(picture, page) {
   return button;
 };
 
+var updateDynamicData = function updateDynamicData(data) {
+  var pathname = getPathname();
+  setData(pathname, data);
+  // update dynamic data
+  runJobWithDynamicData();
+};
+var updateAuth$1 = function updateAuth$1(auth) {
+  updateAuth(auth);
+};
+var updateInfos$1 = function updateInfos$1(infos) {
+  updateInfos(infos);
+};
+
+var helpers = {
+  __proto__: null,
+  updateDynamicData: updateDynamicData,
+  updateAuth: updateAuth$1,
+  updateInfos: updateInfos$1
+};
+
 // import config from './config';
 var taggingRun = function taggingRun(__TaggingConfiguration) {
   if (__TaggingConfiguration) {
@@ -234,4 +281,5 @@ var taggingRun = function taggingRun(__TaggingConfiguration) {
 };
 
 export default taggingRun;
+export { helpers as tagHelpers };
 //# sourceMappingURL=tagging-scripts.esm.js.map

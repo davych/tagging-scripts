@@ -48,6 +48,18 @@ var getAppConfig = function getAppConfig() {
 var setAppConfig = function setAppConfig(config) {
   __TaggingConfiguration = config;
 };
+var updateInfos = function updateInfos(infos) {
+  if (!__TaggingConfiguration.infos) {
+    __TaggingConfiguration.infos = {};
+  }
+  lodash.merge(__TaggingConfiguration.infos, infos);
+};
+var updateAuth = function updateAuth(auth) {
+  if (!__TaggingConfiguration.auth) {
+    __TaggingConfiguration.auth = {};
+  }
+  lodash.merge(__TaggingConfiguration.auth, auth);
+};
 
 var getData = function getData() {
   return getAppConfig().auth || {};
@@ -60,6 +72,9 @@ var getData$1 = function getData() {
 var dynamic = {};
 var getData$2 = function getData(key) {
   return lodash.get(dynamic, key, {});
+};
+var setData = function setData(key, data) {
+  lodash.set(dynamic, key, data);
 };
 
 var pushEvent = function pushEvent(scope, data) {
@@ -88,6 +103,13 @@ var runJob = function runJob() {
     return;
   }
   pushEvent(page, output);
+};
+var runJobWithDynamicData = function runJobWithDynamicData() {
+  var output = getRuleOutput(true);
+  if (lodash.isEmpty(output)) {
+    return;
+  }
+  pushEvent(getActivedPage(), output);
 };
 var findPage = /*#__PURE__*/R.memoizeWith(R.toUpper, function (identifier) {
   var config = getAppConfig();
@@ -144,7 +166,8 @@ var getRuleOutput = function getRuleOutput(decode) {
 var runJob$1 = function runJob(_ref) {
   var _ref$dataset = _ref.dataset,
     dataset = _ref$dataset === void 0 ? {} : _ref$dataset,
-    classList = _ref.classList,
+    _ref$classList = _ref.classList,
+    classList = _ref$classList === void 0 ? [] : _ref$classList,
     id = _ref.id;
   // get actived page
   var page = getActivedPage();
@@ -182,10 +205,14 @@ var getRuleOutput$1 = function getRuleOutput(button, decode, dataset) {
     }
   }
   var pageTag = getActivePageTag();
-  var data = lodash.merge({}, dataset, pageTag, tag, getData(), getData$1());
-  // pending runtime data
+  var dynamicData = getData$2(getPathname());
+  var data = lodash.merge({}, dynamicData, dataset, pageTag, tag, getData(), getData$1());
   var flattenRules = flattenKeys(rules);
   var output = R.mapObjIndexed(function (value) {
+    if (value.startsWith('return')) {
+      var vauleFunc = new Function('data', value);
+      return vauleFunc(data);
+    }
     return replace(value, data);
   }, flattenRules);
   if (decode) {
@@ -214,6 +241,26 @@ var getTargetButton = function getTargetButton(picture, page) {
   return button;
 };
 
+var updateDynamicData = function updateDynamicData(data) {
+  var pathname = getPathname();
+  setData(pathname, data);
+  // update dynamic data
+  runJobWithDynamicData();
+};
+var updateAuth$1 = function updateAuth$1(auth) {
+  updateAuth(auth);
+};
+var updateInfos$1 = function updateInfos$1(infos) {
+  updateInfos(infos);
+};
+
+var helpers = {
+  __proto__: null,
+  updateDynamicData: updateDynamicData,
+  updateAuth: updateAuth$1,
+  updateInfos: updateInfos$1
+};
+
 // import config from './config';
 var taggingRun = function taggingRun(__TaggingConfiguration) {
   if (__TaggingConfiguration) {
@@ -238,4 +285,5 @@ var taggingRun = function taggingRun(__TaggingConfiguration) {
 };
 
 exports.default = taggingRun;
+exports.tagHelpers = helpers;
 //# sourceMappingURL=tagging-scripts.cjs.development.js.map
