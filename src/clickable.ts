@@ -57,7 +57,7 @@ export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
   );
   const flattenRules = utils.flattenKeys(rules);
   const output = R.mapObjIndexed(value => {
-    if(value.startsWith('return')) {
+    if (value.startsWith('return')) {
       const vauleFunc = new Function('data', value);
       return vauleFunc(data);
     }
