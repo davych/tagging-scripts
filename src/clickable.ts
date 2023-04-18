@@ -78,7 +78,7 @@ export const getTargetButton = (picture: any, page?: any) => {
   if (!page) {
     page = pageble.getActivedPage();
   }
-  if (!page) {
+  if (!page || !page.actions || !page.actions.clicks) {
     return;
   }
   const button: any = R.find(
