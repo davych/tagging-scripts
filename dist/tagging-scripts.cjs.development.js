@@ -232,7 +232,7 @@ var getTargetButton = function getTargetButton(picture, page) {
   if (!page) {
     page = getActivedPage();
   }
-  if (!page) {
+  if (!page || !page.actions || !page.actions.clicks) {
     return;
   }
   var button = R.find(R.anyPass([R.propEq(picture.id, 'id'), R.propSatisfies(function (v) {

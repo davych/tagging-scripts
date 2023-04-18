@@ -228,7 +228,7 @@ var getTargetButton = function getTargetButton(picture, page) {
   if (!page) {
     page = getActivedPage();
   }
-  if (!page) {
+  if (!page || !page.actions || !page.actions.clicks) {
     return;
   }
   var button = find(anyPass([propEq(picture.id, 'id'), propSatisfies(function (v) {
