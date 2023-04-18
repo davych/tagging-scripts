@@ -3,6 +3,7 @@ import { debounce } from 'lodash';
 import * as clickable from './clickable';
 import * as pageble from './pageble';
 import * as utils from './utils';
+import * as tagHelpers from './helpers';
 
 const taggingRun = (__TaggingConfiguration: any) => {
   if (__TaggingConfiguration) {
@@ -33,3 +34,4 @@ const taggingRun = (__TaggingConfiguration: any) => {
 };
 
 export default taggingRun;
+export { tagHelpers };

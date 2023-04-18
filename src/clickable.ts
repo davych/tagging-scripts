@@ -5,8 +5,9 @@ import * as auth from './auth';
 import * as infos from './infos';
 import { isEmpty, merge, set } from 'lodash';
 import * as push from './push';
+import * as dynamic from './dynamic';
 
-export const runJob = ({ dataset = {}, classList, id }: any) => {
+export const runJob = ({ dataset = {}, classList = [], id }: any) => {
   // get actived page
   const page = pageble.getActivedPage();
   if (!page) {
@@ -44,17 +45,22 @@ export const getRuleOutput = (button: any, decode: boolean, dataset: any) => {
   }
 
   const pageTag = pageble.getActivePageTag();
+  const dynamicData = dynamic.getData(utils.getPathname());
   const data = merge(
     {},
+    dynamicData,
     dataset,
     pageTag,
     tag,
     auth.getData(),
     infos.getData()
   );
-  // pending runtime data
   const flattenRules = utils.flattenKeys(rules);
   const output = R.mapObjIndexed(value => {
+    if(value.startsWith('return')) {
+      const vauleFunc = new Function('data', value);
+      return vauleFunc(data);
+    }
     return utils.replace(value, data);
   }, flattenRules);
 

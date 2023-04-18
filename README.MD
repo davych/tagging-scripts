@@ -8,10 +8,15 @@ This is a tools for helping FE developers adding tags to track user journey.
 
 ## Why we need this tools
 Too many tools for tagging, too many ways to add tags, too many ways to track user journey. 
+
 Example for Adobe Analytics, we can use `_satellite.track` to add tags in javascript.
+
 Example for Google Tag Manager, we can use `dataLayer.push` to add tags in javascript.
+
 But all of these ways are not easy to use, and not easy to maintain. Developer need to add tags in many places, most of time developer also need talk with biz team to get the tag data, and then add tags in javascript. 
+
 So assuming we are in a large project, we have many pages, and each page have many actions, and each action have many tags. So we need to add tags in many places, when we have some modification, we need to change many places. 
+
 So this tools is for helping FE developers and biz team to add tags in a easy way.
 Biz team can set the tag data in a config file, and FE developers can use this tools to add tags in javascript only need to initialize the config file. Then everything will work.
 
@@ -31,8 +36,8 @@ TaggingScripts(config);
 
 ### Config file
 Config file is a json file, and it is a picture of all pages and actions in your project.
-```JSON
-{
+```javascript
+const config = {
   name: 'app-name',
   pushTargets: {
     gtm: 'return dataLayer.push({event: eventName, ...data});',
