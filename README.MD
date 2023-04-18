@@ -88,15 +88,17 @@ This parameter is used to set the key name of event when fire event. The default
 #### auth
 This parameter is used to set the auth data. The default value is ```{}```. we can update auth by using 
 ```
-import * as helpers from 'tagging-scripts/helpers';
-helpers.updateAuth(auth)
+
+import { tagHelpers } from "tagging-scripts";
+tagHelpers.updateAuth(auth)
 ```
 
 #### infos
 This parameter is used to set the infos data. The default value is ```{}```. we can update infos by using 
 ```
-import * as helpers from 'tagging-scripts/helpers';
-helpers.updateInfos(infos)
+
+import { tagHelpers } from "tagging-scripts";
+tagHelpers.updateInfos(infos)
 ```
 
 #### pages
